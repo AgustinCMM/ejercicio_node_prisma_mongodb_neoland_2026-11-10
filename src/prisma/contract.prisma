@@ -8,3 +8,11 @@ model Product {
   stock       Int32
   @@map("products")
 }
+
+model Service {
+  id          ObjectId @id @map("_id")
+  name        String   @unique
+  description String?
+  price       Double
+  @@map("services")
+}

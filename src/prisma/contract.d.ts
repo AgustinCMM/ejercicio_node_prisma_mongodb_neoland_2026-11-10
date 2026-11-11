@@ -22,7 +22,7 @@ import type {
 } from '@prisma/orm-mongo/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'b1fb99b7d364df79c4dd12b48a069be9aec29f79964cb16adcb4ab43d4927466'>;
+  StorageHashBase<'6b67b77596b0a29b3dadb8843ab0fcf2ab14a45b9980525e092284b1215d01d4'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'251b3ce23f6c9f561892e7c1af9d2cc941a13d64ba1aa7226b90036b09568cc3'>;
@@ -58,11 +58,19 @@ export namespace Models {
     stock: FieldOutputTypes['__unbound__']['Product']['stock'];
     readonly [RelationKeys]?: never;
   };
+  export type unbound_Service = {
+    description: FieldOutputTypes['__unbound__']['Service']['description'];
+    id: FieldOutputTypes['__unbound__']['Service']['id'];
+    name: FieldOutputTypes['__unbound__']['Service']['name'];
+    price: FieldOutputTypes['__unbound__']['Service']['price'];
+    readonly [RelationKeys]?: never;
+  };
 }
 
 export declare const models: {
   __unbound__: {
     Product: Models.unbound_Product;
+    Service: Models.unbound_Service;
   };
 };
 
@@ -104,6 +112,33 @@ type ContractBase = Omit<
                 readonly validationLevel: 'strict';
               };
             };
+            readonly services: {
+              readonly indexes: readonly [
+                {
+                  readonly keys: readonly [{ readonly direction: 1; readonly field: 'name' }];
+                  readonly kind: 'mongo-index';
+                  readonly name: 'name_1';
+                  readonly unique: true;
+                },
+              ];
+              readonly kind: 'mongo-collection';
+              readonly validator: {
+                readonly jsonSchema: {
+                  readonly additionalProperties: false;
+                  readonly bsonType: 'object';
+                  readonly properties: {
+                    readonly _id: { readonly bsonType: 'objectId' };
+                    readonly description: { readonly bsonType: readonly ['null', 'string'] };
+                    readonly name: { readonly bsonType: 'string' };
+                    readonly price: { readonly bsonType: 'double' };
+                  };
+                  readonly required: readonly ['_id', 'name', 'price'];
+                };
+                readonly kind: 'mongo-validator';
+                readonly validationAction: 'error';
+                readonly validationLevel: 'strict';
+              };
+            };
           };
         };
       };
@@ -118,6 +153,10 @@ type ContractBase = Omit<
     readonly products: {
       readonly namespace: '__unbound__' & NamespaceId;
       readonly model: 'Product';
+    };
+    readonly services: {
+      readonly namespace: '__unbound__' & NamespaceId;
+      readonly model: 'Service';
     };
   };
   readonly domain: {
@@ -156,6 +195,36 @@ type ContractBase = Omit<
                 readonly name: { readonly field: 'name' };
                 readonly price: { readonly field: 'price' };
                 readonly stock: { readonly field: 'stock' };
+              };
+            };
+          };
+          readonly Service: {
+            readonly fields: {
+              readonly description: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/objectId@1' };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/string@1' };
+              };
+              readonly price: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/double@1' };
+              };
+            };
+            readonly relations: Record<string, never>;
+            readonly storage: {
+              readonly collection: 'services';
+              readonly fields: {
+                readonly description: { readonly field: 'description' };
+                readonly id: { readonly field: '_id' };
+                readonly name: { readonly field: 'name' };
+                readonly price: { readonly field: 'price' };
               };
             };
           };
